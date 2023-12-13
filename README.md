@@ -1,5 +1,3 @@
-# Viability_of_Localized_Open-source_LLMs_in_Practice
-A repo for our school project, using gen-ai stack
 # GenAI Stack
 The GenAI Stack will get you started building your own GenAI application in no time.
 The demo applications can serve as inspiration or as a starting point.
