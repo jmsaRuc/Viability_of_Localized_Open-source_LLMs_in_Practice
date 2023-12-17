@@ -1,3 +1,6 @@
+# Viablility of localized open-source LLMS In practice 
+This this is a repo made from the GenAI-stack, used in our school project.
+
 # GenAI Stack
 The GenAI Stack will get you started building your own GenAI application in no time.
 The demo applications can serve as inspiration or as a starting point.
