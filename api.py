@@ -1,6 +1,6 @@
 import os
 
-from langchain.graphs import Neo4jGraph
+from langchain_community.graphs import Neo4jGraph
 from dotenv import load_dotenv
 from utils import (
     create_vector_index,
@@ -36,7 +36,7 @@ os.environ["NEO4J_URL"] = url
 
 embeddings, dimension = load_embedding_model(
     embedding_model_name,
-    config={ollama_base_url: ollama_base_url},
+    config={"ollama_base_url": ollama_base_url},
     logger=BaseLogger(),
 )
 

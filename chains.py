@@ -1,20 +1,29 @@
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.embeddings import (
-    OllamaEmbeddings,
-    SentenceTransformerEmbeddings,
-    BedrockEmbeddings,
-)
-from langchain.chat_models import ChatOpenAI, ChatOllama, BedrockChat
-from langchain.vectorstores.neo4j_vector import Neo4jVector
+
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.embeddings import OllamaEmbeddings
+from langchain_community.embeddings import BedrockEmbeddings
+from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+
+from langchain_openai import ChatOpenAI
+from langchain_community.chat_models import ChatOllama
+from langchain_community.chat_models import BedrockChat
+
+from langchain_community.graphs import Neo4jGraph
+
+from langchain_community.vectorstores import Neo4jVector
+
 from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
-from langchain.prompts.chat import (
+
+from langchain.prompts import (
     ChatPromptTemplate,
-    SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
+    SystemMessagePromptTemplate
 )
+
 from typing import List, Any
 from utils import BaseLogger, extract_title_and_question
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 
 def load_embedding_model(embedding_model_name: str, logger=BaseLogger(), config={}):
@@ -32,6 +41,12 @@ def load_embedding_model(embedding_model_name: str, logger=BaseLogger(), config=
         embeddings = BedrockEmbeddings()
         dimension = 1536
         logger.info("Embedding: Using AWS")
+    elif embedding_model_name == "google-genai-embedding-001":        
+        embeddings = GoogleGenerativeAIEmbeddings(
+            model="models/embedding-001"
+        )
+        dimension = 768
+        logger.info("Embedding: Using Google Generative AI Embeddings")
     else:
         embeddings = SentenceTransformerEmbeddings(
             model_name="all-MiniLM-L6-v2", cache_folder="/embedding_model"
@@ -103,7 +118,7 @@ def configure_qa_rag_chain(llm, embeddings, embeddings_store_url, username, pass
     Use the following pieces of context to answer the question at the end.
     The context contains question-answer pairs and their links from Stackoverflow.
     You should prefer information from accepted or more upvoted answers.
-    Make sure to rely on information from the answers and not on questions to provide accuate responses.
+    Make sure to rely on information from the answers and not on questions to provide accurate responses.
     When you find particular answer in the context useful, make sure to cite it in the answer using the link.
     If you don't know the answer, just say that you don't know, don't try to make up an answer.
     ----
